@@ -1,0 +1,89 @@
+-- Add NOT NULL
+ALTER TABLE Employees MODIFY Name VARCHAR(100) NOT NULL;
+
+-- Add UNIQUE
+ALTER TABLE Employees ADD CONSTRAINT unique_email UNIQUE (Email);
+
+-- Add CHECK
+ALTER TABLE Employees ADD CONSTRAINT chk_age CHECK (Age >= 18);
+
+-- Add FOREIGN KEY
+ALTER TABLE Employees ADD CONSTRAINT fk_dept FOREIGN KEY (DepartmentID) REFERENCES Departments(ID);
+
+
+----------------------------------
+-- Inline
+column_name datatype UNIQUE
+
+-- Table-level
+CONSTRAINT constraint_name UNIQUE (column1, column2, ...)
+
+CREATE TABLE Student (
+    ID INT,
+    Email VARCHAR(100) UNIQUE
+);
+
+-- Or for multiple columns
+CREATE TABLE Student (
+    ID INT,
+    RollNo INT,
+    Section CHAR(1),
+    CONSTRAINT unique_roll_section UNIQUE(RollNo, Section)
+);
+
+
+--------------------------------------
+-- Inline
+column_name datatype PRIMARY KEY
+
+-- Table-level
+CONSTRAINT constraint_name PRIMARY KEY (column1, column2, ...)
+
+CREATE TABLE Student (
+    ID INT PRIMARY KEY,
+    Name VARCHAR(50)
+);
+
+-- Or composite key
+CREATE TABLE StudentCourse (
+    StudentID INT,
+    CourseID INT,
+    CONSTRAINT pk_StudentCourse PRIMARY KEY(StudentID, CourseID)
+);
+
+
+-------------------------------------------------------
+
+-- Inline
+column_name datatype CHECK (condition)
+
+-- Table-level
+CONSTRAINT constraint_name CHECK (condition)
+
+CREATE TABLE Product (
+    ID INT PRIMARY KEY,
+    Price DECIMAL(10, 2) CHECK (Price > 0),
+    Quantity INT,
+    CONSTRAINT chk_quantity CHECK (Quantity >= 0)
+);
+
+-----------------------------------------------
+
+column_name datatype DEFAULT default_value
+
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,
+    Status VARCHAR(20) DEFAULT 'Pending',
+    OrderDate DATE DEFAULT CURRENT_DATE
+);
+
+-----------------------------------------------
+
+CREATE INDEX idx_email ON Student(Email);
+
+----------------------------------------------
+CREATE TABLE child_table (
+    id INT PRIMARY KEY,
+    parent_id INT,
+    FOREIGN KEY (parent_id) REFERENCES parent_table(id)
+);
